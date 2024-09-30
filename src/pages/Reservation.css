@@ -1,0 +1,117 @@
+
+.reservation-container {
+    max-width: 600px;
+    margin: 25px auto;
+    background-color: #111;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.reservation-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.reservation-description {
+    text-align: center;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.reservation-form {
+    display: flex;
+    justify-content: space-between; 
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+
+.reservation-field {
+    display: flex;
+    flex-direction: column; 
+    flex: 1;
+}
+
+.reservation-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #bfa65a;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.reservation-select,
+.reservation-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    background-color: #333;
+    color: #fff;
+    outline: none; 
+    margin:0,5px
+    
+}
+
+.reservation-timeslots {
+    text-align: center;
+}
+
+.reservation-timeslots-title {
+    margin-bottom: 10px;
+}
+
+.reservation-slots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.reservation-slot-button {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+.reservation-slot-button.active,
+.reservation-slot-button:hover {
+    background-color: #bfa65a;
+    color: #000;
+}
+
+.reservation-submit {
+    display: block;
+    width: 100%;
+    background-color: #bfa65a;
+    color: #111;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.reservation-submit:hover {
+    background-color: #d1b372;
+}
+
+
+@media (max-width: 768px) {
+    .reservation-form {
+        flex-direction: column;
+    }
+
+    .reservation-field {
+        margin-bottom: 10px; 
+    }
+}

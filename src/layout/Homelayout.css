@@ -1,0 +1,41 @@
+/* Layout CSS */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevents the entire layout from scrolling */
+}
+
+/* Header fixed at the top */
+.header-container {
+  height: 3.125rem; /* Header height equivalent to 50px (3.125rem = 50px) */
+  flex-shrink: 0;
+  position: fixed; /* Fix the header at the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #000;
+}
+
+/* Footer fixed at the bottom */
+.footer-container {
+  height: 3.125rem; /* Footer height equivalent to 50px (3.125rem = 50px) */
+  flex-shrink: 0;
+  position: fixed; /* Fix the footer at the bottom */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #000;
+}
+
+/* Main content takes remaining space dynamically */
+.main-content {
+  flex-grow: 1;
+  max-height: calc(100vh-2*3.125rem);
+  margin-top: 3.125rem; /* Push the main content below the fixed header */
+  margin-bottom: 3.125rem; /* Push the content above the fixed footer */
+  overflow-y: auto; /* Make the main content scrollable */
+
+}
