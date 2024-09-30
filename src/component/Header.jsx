@@ -7,7 +7,7 @@ import logo from '../assets/logo.png';
 import './Header.css';
 
 function Header() {
-  // Access cart items from Redux state
+
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -43,11 +43,11 @@ function Header() {
             <Link className="header-link" to="/cart">
               <div className="header-cart">
                 <FaCartArrowDown className="header-cart__icon" />
-                <span className="header-cart__count">({totalItems})</span> {/* Showing total items in the cart */}
+                <span className="header-cart__count">({totalItems})</span> 
               </div>
             </Link>
           </li>
-          {/* Login Section */}
+        
           <li>
             <Link className="header-link header-link--login" to="/authForm">
               <div className="header-login">
