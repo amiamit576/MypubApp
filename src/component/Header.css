@@ -1,0 +1,172 @@
+/* src/pages/Header.css */
+
+/* General Styling for Header */
+.header-container {
+  display: flex;
+  justify-content: space-between; /* Ensures space between logo and navigation */
+  align-items: center;
+  background-color: #000000; /* Background color of header */
+  padding: 0.5rem 1rem; /* Padding for the header */
+  height: 3.125rem; /* Fixed height for header */
+  position: relative;
+  z-index: 10; /* Stacking context */
+}
+
+.header-logo {
+  flex-shrink: 0; /* Prevents logo from resizing */
+}
+
+.header-logo__image {
+  width: 5rem; /* Logo width */
+  height: 45px; /* Logo height */
+}
+
+/* Header Navigation */
+.header-navigation {
+  flex-grow: 1; /* Allows navigation to take available space */
+  display: flex;
+  justify-content: space-evenly; /* Even space between navigation items */
+}
+
+.header-list {
+  display: flex; /* Flex layout for list items */
+  align-items: center; /* Centering items */
+  list-style-type: none; /* No bullets for list */
+  margin: 0; /* Reset margin */
+  padding: 0; /* Reset padding */
+}
+
+/* Header Links */
+.header-link {
+  color: white; /* White text for links */
+  text-decoration: none; /* No underline for links */
+  padding: 0.5rem 1rem; /* Uniform padding for links */
+  font-size: 0.875rem; /* Font size for links */
+  transition: color 0.3s ease; /* Smooth color transition on hover */
+  display: flex; /* Flex for icons and text alignment */
+  align-items: center; /* Center items vertically */
+}
+
+.header-link:hover {
+  color: #f39c12; /* Color change on hover */
+}
+
+.header-link--login {
+  display: flex; /* Flex for login section */
+  align-items: center; /* Center items vertically */
+}
+
+.header-login {
+  display: flex; /* Flex layout for login */
+  align-items: center; /* Center items vertically */
+}
+
+/* Cart Section */
+.header-cart {
+  display: flex; /* Flex layout for cart section */
+  align-items: center; /* Center items vertically */
+}
+
+.header-cart__icon {
+  font-size: 1.5rem; /* Size for cart icon */
+  margin-right: 0.5rem; /* Space between icon and count */
+}
+
+.header-cart__count {
+  font-size: 1rem; /* Font size for cart item count */
+}
+
+/* Icon Styles */
+.header-login__icon,
+.header-cart__icon {
+  font-size: 1.25rem; /* Size for login and cart icons */
+  margin-right: 0.5rem; /* Space between icon and text */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .header-link {
+    padding: 0.5rem 1rem; /* Reduced padding for responsiveness */
+    font-size: 0.875rem; /* Font size */
+  }
+
+  .header-logo__image {
+    width: 4.5rem; /* Scale logo */
+    height: 40px; /* Scale height */
+  }
+}
+
+@media (max-width: 992px) {
+  .header-container {
+    padding: 0.5rem 0.75rem; /* Less padding for medium screens */
+  }
+
+  .header-link {
+    padding: 0.5rem 1rem; /* Reduced padding for links */
+    font-size: 0.8rem; /* Smaller font size */
+  }
+
+  .header-logo__image {
+    width: 4rem; /* Logo scaling */
+    height: 36px; /* Logo height */
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column; /* Stack items vertically on small screens */
+    height: auto; /* Allow height to auto */
+    padding: 0.75rem; /* More padding on smaller screens */
+  }
+
+  .header-navigation {
+    width: 100%; /* Full width for navigation */
+    justify-content: center; /* Center navigation items */
+  }
+
+  .header-list {
+    flex-direction: column; /* Stack links vertically */
+  }
+
+  .header-link {
+    padding: 0.5rem 0; /* More padding for readability */
+    font-size: 0.9rem; /* Slightly larger font for readability */
+  }
+
+  .header-logo__image {
+    width: 3.75rem; /* Reduce logo size */
+    height: 34px; /* Adjust height */
+  }
+}
+
+@media (max-width: 576px) {
+  .header-container {
+    padding: 0.5rem; /* Compact padding for very small screens */
+  }
+
+  .header-link {
+    padding: 0.4rem 0; /* More condensed link spacing */
+    font-size: 0.8rem; /* Reduce font size */
+  }
+
+  .header-logo__image {
+    width: 3.5rem; /* Further reduce logo size */
+    height: 32px; /* Adjust height */
+  }
+
+  .header-login__icon,
+  .header-cart__icon {
+    font-size: 1rem; /* Scale down icons */
+  }
+}
+
+@media (max-width: 375px) {
+  .header-link {
+    font-size: 0.75rem; /* Smallest font size for mobile */
+  }
+
+  .header-logo__image {
+    width: 3.25rem; /* Small logo for very small screens */
+    height: 30px; /* Adjust height */
+  }
+}
