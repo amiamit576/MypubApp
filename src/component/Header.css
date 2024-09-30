@@ -1,172 +1,176 @@
-/* src/pages/Header.css */
-
-/* General Styling for Header */
 .header-container {
   display: flex;
-  justify-content: space-between; /* Ensures space between logo and navigation */
+  justify-content: space-between;
   align-items: center;
-  background-color: #000000; /* Background color of header */
-  padding: 0.5rem 1rem; /* Padding for the header */
-  height: 3.125rem; /* Fixed height for header */
+  background-color: #000000;
+  padding: 0.5rem 1rem;
+  height: 3.125rem;
   position: relative;
-  z-index: 10; /* Stacking context */
+  z-index: 10;
 }
 
 .header-logo {
-  flex-shrink: 0; /* Prevents logo from resizing */
+  flex-shrink: 0;
 }
 
 .header-logo__image {
-  width: 5rem; /* Logo width */
-  height: 45px; /* Logo height */
+  width: 5rem;
+  height: 45px;
 }
 
-/* Header Navigation */
 .header-navigation {
-  flex-grow: 1; /* Allows navigation to take available space */
+  flex-grow: 1;
   display: flex;
-  justify-content: space-evenly; /* Even space between navigation items */
+  justify-content: space-evenly;
 }
 
 .header-list {
-  display: flex; /* Flex layout for list items */
-  align-items: center; /* Centering items */
-  list-style-type: none; /* No bullets for list */
-  margin: 0; /* Reset margin */
-  padding: 0; /* Reset padding */
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* Header Links */
 .header-link {
-  color: white; /* White text for links */
-  text-decoration: none; /* No underline for links */
-  padding: 0.5rem 1rem; /* Uniform padding for links */
-  font-size: 0.875rem; /* Font size for links */
-  transition: color 0.3s ease; /* Smooth color transition on hover */
-  display: flex; /* Flex for icons and text alignment */
-  align-items: center; /* Center items vertically */
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 
 .header-link:hover {
-  color: #f39c12; /* Color change on hover */
+  color: #f39c12;
 }
 
 .header-link--login {
-  display: flex; /* Flex for login section */
-  align-items: center; /* Center items vertically */
+  display: flex;
+  align-items: center;
 }
 
 .header-login {
-  display: flex; /* Flex layout for login */
-  align-items: center; /* Center items vertically */
+  display: flex;
+  align-items: center;
 }
 
-/* Cart Section */
 .header-cart {
-  display: flex; /* Flex layout for cart section */
-  align-items: center; /* Center items vertically */
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .header-cart__icon {
-  font-size: 1.5rem; /* Size for cart icon */
-  margin-right: 0.5rem; /* Space between icon and count */
+  font-size: 1.5rem;
 }
 
 .header-cart__count {
-  font-size: 1rem; /* Font size for cart item count */
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #f39c12;
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 20px;
+  height: 20px;
 }
 
-/* Icon Styles */
 .header-login__icon,
 .header-cart__icon {
-  font-size: 1.25rem; /* Size for login and cart icons */
-  margin-right: 0.5rem; /* Space between icon and text */
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
 }
 
-/* Responsive Design */
 @media (max-width: 1200px) {
   .header-link {
-    padding: 0.5rem 1rem; /* Reduced padding for responsiveness */
-    font-size: 0.875rem; /* Font size */
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
   }
 
   .header-logo__image {
-    width: 4.5rem; /* Scale logo */
-    height: 40px; /* Scale height */
+    width: 4.5rem;
+    height: 40px;
   }
 }
 
 @media (max-width: 992px) {
   .header-container {
-    padding: 0.5rem 0.75rem; /* Less padding for medium screens */
+    padding: 0.5rem 0.75rem;
   }
 
   .header-link {
-    padding: 0.5rem 1rem; /* Reduced padding for links */
-    font-size: 0.8rem; /* Smaller font size */
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
   }
 
   .header-logo__image {
-    width: 4rem; /* Logo scaling */
-    height: 36px; /* Logo height */
+    width: 4rem;
+    height: 36px;
   }
 }
 
 @media (max-width: 768px) {
   .header-container {
-    flex-direction: column; /* Stack items vertically on small screens */
-    height: auto; /* Allow height to auto */
-    padding: 0.75rem; /* More padding on smaller screens */
+    flex-direction: column;
+    height: auto;
+    padding: 0.75rem;
   }
 
   .header-navigation {
-    width: 100%; /* Full width for navigation */
-    justify-content: center; /* Center navigation items */
+    width: 100%;
+    justify-content: center;
   }
 
   .header-list {
-    flex-direction: column; /* Stack links vertically */
+    flex-direction: column;
   }
 
   .header-link {
-    padding: 0.5rem 0; /* More padding for readability */
-    font-size: 0.9rem; /* Slightly larger font for readability */
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
   }
 
   .header-logo__image {
-    width: 3.75rem; /* Reduce logo size */
-    height: 34px; /* Adjust height */
+    width: 3.75rem;
+    height: 34px;
   }
 }
 
 @media (max-width: 576px) {
   .header-container {
-    padding: 0.5rem; /* Compact padding for very small screens */
+    padding: 0.5rem;
   }
 
   .header-link {
-    padding: 0.4rem 0; /* More condensed link spacing */
-    font-size: 0.8rem; /* Reduce font size */
+    padding: 0.4rem 0;
+    font-size: 0.8rem;
   }
 
   .header-logo__image {
-    width: 3.5rem; /* Further reduce logo size */
-    height: 32px; /* Adjust height */
+    width: 3.5rem;
+    height: 32px;
   }
 
   .header-login__icon,
   .header-cart__icon {
-    font-size: 1rem; /* Scale down icons */
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 375px) {
   .header-link {
-    font-size: 0.75rem; /* Smallest font size for mobile */
+    font-size: 0.75rem;
   }
 
   .header-logo__image {
-    width: 3.25rem; /* Small logo for very small screens */
-    height: 30px; /* Adjust height */
+    width: 3.25rem;
+    height: 30px;
   }
 }
