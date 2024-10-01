@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FaStar, FaHeart } from 'react-icons/fa';
-import { toast } from 'react-toastify'; // Import toast
 import './MenuCard.css';
 
 const MenuCard = ({ image, name, price, addToCart }) => {
@@ -13,7 +12,7 @@ const MenuCard = ({ image, name, price, addToCart }) => {
 
   const handleAddToCart = () => {
     addToCart({ id: Math.random(), image, name, price }); 
-    toast.success(`${name} added to cart!`);
+
   };
 
   return (
