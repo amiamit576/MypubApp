@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import './AuthForm.css'; 
+import './AuthForm.css';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'; // Import useDispatch from Redux
+import { login } from '../store/Slice/authSlice'; // Import login action from authSlice
 
 const AuthForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // Initialize useDispatch
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
+    role: '',
     terms: false,
   });
 
@@ -29,6 +33,7 @@ const AuthForm = () => {
       lastName: '',
       email: '',
       password: '',
+      role: '',
       terms: false,
     });
   };
@@ -36,15 +41,13 @@ const AuthForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-  
+    // Validation
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all required fields.');
       return;
     }
-
 
     if (!emailRegex.test(formData.email)) {
       toast.error('Please enter a valid email address.');
@@ -58,24 +61,26 @@ const AuthForm = () => {
     const existingUser = storedUsers.find((user) => user.email === formData.email);
 
     if (isLoginMode) {
-    
+      // Login logic
       if (!existingUser || existingUser.password !== formData.password) {
         toast.error('Invalid email or password.');
         return;
       }
 
+      // Dispatch the logged-in user to Redux store
+      dispatch(login(existingUser));
 
       toast.success('Login successful!');
       navigate('/');
     } else {
-      // In sign-up mode, check if the email is already registered
+      // Signup logic
       if (existingUser) {
         toast.error('User with this email already exists.');
         return;
       }
 
-      // Check if first name, last name, and terms are filled and agreed
-      if (!formData.firstName || !formData.lastName) {
+      // Validate required fields for signup
+      if (!formData.firstName || !formData.lastName || !formData.role) {
         toast.error('Please fill in all fields.');
         return;
       }
@@ -84,12 +89,16 @@ const AuthForm = () => {
         toast.error('You must agree to the Terms & Conditions.');
         return;
       }
-      storedUsers.push(formData);
 
+      // Store the new user data in localStorage
+      storedUsers.push(formData);
       localStorage.setItem('users', JSON.stringify(storedUsers));
 
+      // Dispatch the newly registered user to Redux store
+      dispatch(login(formData));
+
       toast.success('Account created successfully!');
-      toggleMode();
+      toggleMode(); // Switch to login mode after successful signup
     }
   };
 
@@ -119,6 +128,19 @@ const AuthForm = () => {
                   value={formData.lastName}
                   onChange={handleChange}
                 />
+              </div>
+              <div className="auth-page__input-container">
+                <select
+                  name="role"
+                  className="auth-page__input"
+                  value={formData.role}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Role</option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                  
+                </select>
               </div>
             </>
           )}

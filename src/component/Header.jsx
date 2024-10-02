@@ -1,15 +1,28 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { VscAccount } from 'react-icons/vsc';
 import { FaCartArrowDown } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa'; 
 import logo from '../assets/logo.png';
 import './Header.css';
 
+import { logout } from '../store/Slice/authSlice';
+
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const user = useSelector((state) => state.auth.user); 
+  const totalItems = cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      dispatch(logout());
+      navigate('/'); 
+    }
+  };
 
   return (
     <nav className="header-container">
@@ -38,7 +51,7 @@ function Header() {
           <li>
             <Link className="header-link" to="/contact">Contact</Link>
           </li>
-          {/* Cart Section */}
+        
           <li>
             <Link className="header-link" to="/cart">
               <div className="header-cart">
@@ -49,12 +62,31 @@ function Header() {
           </li>
         
           <li>
-            <Link className="header-link header-link--login" to="/authForm">
-              <div className="header-login">
-                <VscAccount className="header-login__icon" />
-                <span>Login</span>
-              </div>
-            </Link>
+            {user ? (
+              <>
+                <Link className="header-link header-link--account" to="/user-dashboard">
+                  <div className="header-account">
+                 
+                    <span>{user.firstName ? `${user.firstName} ${user.lastName}` : user.email}</span>
+                  </div>
+                </Link>
+
+                <button 
+                  className="header-link header-link--logout" 
+                  onClick={handleLogout}
+                >
+                  <FaSignOutAlt className="header-logout__icon" />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <Link className="header-link header-link--login" to="/authForm">
+                <div className="header-login">
+                  <VscAccount className="header-login__icon" />
+                  <span>Login</span>
+                </div>
+              </Link>
+            )}
           </li>
         </ul>
       </div>

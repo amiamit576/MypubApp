@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FaStar, FaHeart } from 'react-icons/fa';
-import './MenuCard.css';
 
 const MenuCard = ({ image, name, price, addToCart }) => {
   const [rating, setRating] = useState(0);

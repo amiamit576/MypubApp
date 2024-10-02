@@ -1,4 +1,3 @@
-// src/routes/AppRoutes.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Homelayout from '../layout/Homelayout';
@@ -13,22 +12,34 @@ import Cart from '../pages/Cart';
 import Checkout from '../pages/Checkout';
 import AuthForm from '../pages/AuthForm';
 import NotFound from '../pages/NotFound';
+import AdminDashboard from '../pages/AdminDashboard';
+import PrivateRoute from '../routes/PrivateRoute';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Homelayout />}>
+      <Route element={<Homelayout />}>
+        {/* Public Routes */}
         <Route index element={<Home />} />
-        <Route path="join" element={<Join />} />
         <Route path="special-event" element={<SpecialEvent />} />
-        <Route path="reservation" element={<Reservation />} />
         <Route path="gallery" element={<Gallery />} />
         <Route path="contact" element={<Contact />} />
         <Route path="authForm" element={<AuthForm />} />
         <Route path="menu" element={<Menu />} />
         <Route path="cart" element={<Cart />} />
-        <Route path='checkout' element={<Checkout/>}/>
+        <Route path="checkout" element={<Checkout />} />
         <Route path="*" element={<NotFound />} />
+
+        {/* Protected Routes */}
+        <Route element={<PrivateRoute allowedRoles={['user', 'admin']} />}>
+          <Route path="join" element={<Join />} />
+          <Route path="reservation" element={<Reservation />} />
+        </Route>
+
+        {/* Admin Protected Route */}
+        <Route element={<PrivateRoute allowedRoles={['admin']} />}>
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        </Route>
       </Route>
     </Routes>
   );

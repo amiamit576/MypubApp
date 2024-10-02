@@ -46,12 +46,16 @@
   color: #f39c12;
 }
 
-.header-link--login {
+.header-link--login,
+.header-link--account,
+.header-link--logout {
   display: flex;
   align-items: center;
 }
 
-.header-login {
+.header-login,
+.header-account,
+.header-logout {
   display: flex;
   align-items: center;
 }
@@ -65,6 +69,7 @@
 .header-cart__icon {
   font-size: 1.5rem;
 }
+
 .header-cart__count {
   position: absolute;
   top: -8px;
@@ -81,11 +86,28 @@
   border-radius: 0;
 }
 
-
 .header-login__icon,
-.header-cart__icon {
+.header-cart__icon,
+.header-account__icon,
+.header-logout__icon {
   font-size: 1.25rem;
   margin-right: 0.5rem;
+}
+
+.header-link--logout {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.header-link--logout:hover {
+  color: #f39c12;
 }
 
 @media (max-width: 1200px) {
@@ -159,7 +181,8 @@
   }
 
   .header-login__icon,
-  .header-cart__icon {
+  .header-cart__icon,
+  .header-logout__icon {
     font-size: 1rem;
   }
 }
