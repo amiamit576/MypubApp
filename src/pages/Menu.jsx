@@ -41,10 +41,9 @@ const Menu = () => {
       } else if (sortOption === 'category') {
         return a.category.localeCompare(b.category);
       }
-      return 0; // No sorting if no option is selected
+      return 0; 
     });
 
-  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredAndSortedItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -52,7 +51,6 @@ const Menu = () => {
 
   return (
     <div className="menu-page-container">
-      {/* Search and Sort Bar */}
       <div className="search-sort-container">
         <input
           type="text"
@@ -72,8 +70,6 @@ const Menu = () => {
           <option value="category">Category</option>
         </select>
       </div>
-
-      {/* Menu Cards */}
       <div className="menu-grid">
         {currentItems.length > 0 ? (
           currentItems.map((item) => (
@@ -90,7 +86,6 @@ const Menu = () => {
         )}
       </div>
 
-      {/* Pagination */}
       <div className="pagination">
         <button
           disabled={currentPage === 1}

@@ -12,6 +12,7 @@ import Cart from '../pages/Cart';
 import Checkout from '../pages/Checkout';
 import AuthForm from '../pages/AuthForm';
 import NotFound from '../pages/NotFound';
+import UserDetailPage from '../pages/UserDetailPage';
 import AdminDashboard from '../pages/AdminDashboard';
 import PrivateRoute from '../routes/PrivateRoute';
 
@@ -27,13 +28,15 @@ const AppRoutes = () => {
         <Route path="authForm" element={<AuthForm />} />
         <Route path="menu" element={<Menu />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="checkout" element={<Checkout />} />
+       
         <Route path="*" element={<NotFound />} />
 
         {/* Protected Routes */}
         <Route element={<PrivateRoute allowedRoles={['user', 'admin']} />}>
           <Route path="join" element={<Join />} />
+          <Route path="UserDetailPage" element={<UserDetailPage />} />
           <Route path="reservation" element={<Reservation />} />
+          <Route path="checkout" element={<Checkout />} />
         </Route>
 
         {/* Admin Protected Route */}

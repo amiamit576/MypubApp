@@ -1,8 +1,8 @@
-// PrivateRoute.js
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Modal from '../component/Modal'; // Import your modal component
+import Modal from '../component/Modal'; 
 
 const PrivateRoute = ({ allowedRoles }) => {
     const { user } = useSelector((state) => state.auth);
@@ -19,16 +19,16 @@ const PrivateRoute = ({ allowedRoles }) => {
 
     const handleConfirm = () => {
         closeModal();
-        // Redirect to the authForm page
+      
         navigate('/authForm');
     };
 
-    // Check if the user is not logged in or not authorized
+ 
     useEffect(() => {
         if (!user || (allowedRoles && !allowedRoles.includes(user.role))) {
-            openModal(); // Open modal for unauthorized access
+            openModal(); 
         }
-    }, [user, allowedRoles]); // Run effect whenever user or allowedRoles changes
+    }, [user, allowedRoles]); 
 
     // If the modal is open, we don't want to render the Outlet
     if (isModalOpen) {

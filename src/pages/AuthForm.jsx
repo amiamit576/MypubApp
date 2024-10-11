@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import './AuthForm.css';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux'; // Import useDispatch from Redux
-import { login } from '../store/Slice/authSlice'; // Import login action from authSlice
+import { useDispatch } from 'react-redux';
+import { login } from '../store/Slice/authSlice';
+import axios from 'axios';
 
 const AuthForm = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Initialize useDispatch
+  const dispatch = useDispatch();
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -38,12 +39,13 @@ const AuthForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    // Validation
+
+    
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all required fields.');
       return;
@@ -54,34 +56,19 @@ const AuthForm = () => {
       return;
     }
 
-    // Retrieve users array from localStorage or initialize it as an empty array
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Check if a user with the same email already exists
-    const existingUser = storedUsers.find((user) => user.email === formData.email);
-
-    if (isLoginMode) {
-      // Login logic
-      if (!existingUser || existingUser.password !== formData.password) {
-        toast.error('Invalid email or password.');
+    if (!isLoginMode) {
+      if (!formData.firstName || formData.firstName.length < 2 || formData.firstName.length > 50) {
+        toast.error('First name must be between 2 and 50 characters.');
         return;
       }
 
-      // Dispatch the logged-in user to Redux store
-      dispatch(login(existingUser));
-
-      toast.success('Login successful!');
-      navigate('/');
-    } else {
-      // Signup logic
-      if (existingUser) {
-        toast.error('User with this email already exists.');
+      if (!formData.lastName || formData.lastName.length > 50) {
+        toast.error('Last name cannot exceed 50 characters.');
         return;
       }
 
-      // Validate required fields for signup
-      if (!formData.firstName || !formData.lastName || !formData.role) {
-        toast.error('Please fill in all fields.');
+      if (!formData.role || (formData.role !== 'user' && formData.role !== 'admin')) {
+        toast.error('Please select a valid role.');
         return;
       }
 
@@ -90,15 +77,60 @@ const AuthForm = () => {
         return;
       }
 
-      // Store the new user data in localStorage
-      storedUsers.push(formData);
-      localStorage.setItem('users', JSON.stringify(storedUsers));
+      if (formData.password.length < 6) {
+        toast.error('Password must be at least 6 characters long.');
+        return;
+      }
+    }
 
-      // Dispatch the newly registered user to Redux store
-      dispatch(login(formData));
+    const API_URL = 'http://localhost:5000/api/v1/user';
 
-      toast.success('Account created successfully!');
-      toggleMode(); // Switch to login mode after successful signup
+    if (isLoginMode) {
+      try {
+        
+        const response = await axios.post(`${API_URL}/login`, {
+          email: formData.email,
+          password: formData.password,
+        }, {
+          withCredentials: true, 
+        });
+
+        const data = response.data;
+
+        if (response.status !== 200) {
+          toast.error(data.message || 'Login failed');
+          return;
+        }
+
+        dispatch(login(data.user));
+        toast.success('Login successful!');
+        navigate('/UserDetailPage');
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Login failed');
+      }
+    } else {
+      try {
+        const response = await axios.post(`${API_URL}/signUp`, {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+          terms: formData.terms,
+        });
+
+        const data = response.data;
+
+        if (response.status !== 201) {
+          toast.error(data.message || 'Sign up failed');
+          return;
+        }
+
+        toast.success('Account created successfully!');
+        toggleMode();
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Sign up failed');
+      }
     }
   };
 
@@ -139,7 +171,6 @@ const AuthForm = () => {
                   <option value="">Select Role</option>
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
-                  
                 </select>
               </div>
             </>
