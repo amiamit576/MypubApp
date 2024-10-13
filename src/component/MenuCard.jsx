@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaStar, FaHeart } from 'react-icons/fa';
 
 const MenuCard = ({ image, name, price, addToCart }) => {
+  const imageUrl = `http://localhost:5000${image}`; // Prepend base URL
   const [rating, setRating] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -10,14 +11,13 @@ const MenuCard = ({ image, name, price, addToCart }) => {
   const decreaseQuantity = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
   const handleAddToCart = () => {
-    addToCart({ id: Math.random(), image, name, price }); 
-
+    addToCart({ id: Math.random(), image, name, price, quantity }); // Include quantity in the cart
   };
 
   return (
     <div className="menu-card">
       <div className="menu-card-image-container">
-        <img src={image} alt={name} className="menu-card-image" />
+        <img src={imageUrl} alt={name} className="menu-card-image" />
         <FaHeart
           size={25}
           color={isFavorite ? 'red' : '#e4e5e9'}

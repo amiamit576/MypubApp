@@ -45,26 +45,30 @@ const Cart = () => {
       ) : (
         <div className="cart-content">
           <div className="cart-left">
-            {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
-                <img src={item.image} alt={item.name} className="cart-item__image" />
-                <div className="cart-item-details">
-                  <h3 className="cart-item__name">{item.name}</h3>
-                  <p className="cart-item__price">Price: ₹{item.price}</p>
-                  <p className="cart-item__quantity">
-                    Quantity: 
-                    <button onClick={() => handleDecreaseQuantity(item.id)} className="quantity-button">-</button>
-                    {item.quantity}
-                    <button onClick={() => handleIncreaseQuantity(item.id)} className="quantity-button">+</button>
-                  </p>
-                  <p className="cart-item__seller">Seller: {item.seller}</p>
-                  <p className="cart-item__delivery">Delivery: Free by {item.deliveryDate}</p>
-                  <button onClick={() => handleRemoveFromCart(item.id)} className="cart-item__remove-button">
-                    Remove
-                  </button>
+            {cartItems.map((item) => {
+              // Construct the image URL
+              const imageUrl = `http://localhost:5000${item.image}`;
+              
+              return (
+                <div key={item.id} className="cart-item">
+                  <img src={imageUrl} alt={item.name} className="cart-item__image" />
+                  <div className="cart-item-details">
+                    <h3 className="cart-item__name">{item.name}</h3>
+                    <p className="cart-item__price">Price: ₹{item.price}</p>
+                    <p className="cart-item__quantity">
+                      Quantity: 
+                      <button onClick={() => handleDecreaseQuantity(item.id)} className="quantity-button">-</button>
+                      {item.quantity}
+                      <button onClick={() => handleIncreaseQuantity(item.id)} className="quantity-button">+</button>
+                    </p>
+                 
+                    <button onClick={() => handleRemoveFromCart(item.id)} className="cart-item__remove-button">
+                      Remove
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <button onClick={handleClearCart} className="cart-clear-button">Clear Cart</button>
           </div>
 
