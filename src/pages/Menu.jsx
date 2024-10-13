@@ -1,48 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import MenuCard from '../component/MenuCard';
-import images from '../assets/index';
 import './Menu.css';
 import { useDispatch } from 'react-redux';
-import {addToCart} from '../store/Slice/cartSlice'
-
-const items = [
-  { id: 1, image: images.image1, name: 'Mojito', price: 10, category: 'Cocktail' },
-  { id: 2, image: images.image2, name: 'Beer', price: 12, category: 'Alcoholic Beverage' },
-  { id: 3, image: images.image3, name: 'Whiskey Sour', price: 14, category: 'Cocktail' },
-  { id: 4, image: images.image4, name: 'Gin & Tonic', price: 16, category: 'Cocktail' },
-  { id: 5, image: images.image5, name: 'IPA Beer', price: 18, category: 'Alcoholic Beverage' },
-  { id: 6, image: images.image6, name: 'Old Fashioned', price: 20, category: 'Cocktail' },
-  { id: 7, image: images.image7, name: 'Martini', price: 22, category: 'Cocktail' },
-  { id: 8, image: images.image8, name: 'Tequila Sunrise', price: 24, category: 'Cocktail' },
-  { id: 9, image: images.image9, name: 'Wine - Red', price: 26, category: 'Wine' },
-  { id: 10, image: images.image10, name: 'Wine - White', price: 28, category: 'Wine' },
-  { id: 11, image: images.image11, name: 'Margarita', price: 30, category: 'Cocktail' },
-  { id: 12, image: images.image12, name: 'Rum & Coke', price: 32, category: 'Cocktail' },
-  { id: 13, image: images.image13, name: 'Pina Colada', price: 34, category: 'Cocktail' },
-  { id: 14, image: images.image14, name: 'Craft Beer', price: 36, category: 'Alcoholic Beverage' },
-  { id: 15, image: images.image15, name: 'Lager Beer', price: 38, category: 'Alcoholic Beverage' }
-];
+import { addToCart } from '../store/Slice/cartSlice';
 
 const Menu = () => {
   const dispatch = useDispatch();
+  const [items, setItems] = useState([]);  // For storing fetched data
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOption, setSortOption] = useState('');
   const itemsPerPage = 3;
 
-  // Filtering and Sorting items
-  const filteredAndSortedItems = items
-    .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) // Search by name
-    .sort((a, b) => {
-      if (sortOption === 'name') {
-        return a.name.localeCompare(b.name);
-      } else if (sortOption === 'price') {
-        return a.price - b.price;
-      } else if (sortOption === 'category') {
-        return a.category.localeCompare(b.category);
+  // Fetching items from the API
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/v1/products/products');
+        console.log(response.data.data.products);
+        setItems(response.data.data.products); 
+      } catch (error) {
+        console.error('Error fetching items:', error);
       }
-      return 0; 
-    });
+    };
+
+    fetchItems();
+  }, []);  
+
+  
+  const filteredAndSortedItems = (items || [])
+  .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  .sort((a, b) => {
+    if (sortOption === 'name') {
+      return a.name.localeCompare(b.name);
+    } else if (sortOption === 'price') {
+      return a.price - b.price;
+    } else if (sortOption === 'category') {
+      return a.category.localeCompare(b.category);
+    }
+    return 0;
+  });
+
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -74,7 +73,7 @@ const Menu = () => {
         {currentItems.length > 0 ? (
           currentItems.map((item) => (
             <MenuCard
-              key={item.id}
+              key={item._id}
               image={item.image}
               name={item.name}
               price={item.price}
