@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -15,22 +14,20 @@ const PrivateRoute = ({ allowedRoles }) => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        navigate('/');  // Redirect to home page on cancel
     };
 
     const handleConfirm = () => {
         closeModal();
-      
-        navigate('/authForm');
+        navigate('/authForm');  // Redirect to the sign-up form on confirmation
     };
 
- 
     useEffect(() => {
         if (!user || (allowedRoles && !allowedRoles.includes(user.role))) {
             openModal(); 
         }
-    }, [user, allowedRoles]); 
+    }, [user, allowedRoles]);
 
-    // If the modal is open, we don't want to render the Outlet
     if (isModalOpen) {
         return (
             <>
@@ -43,7 +40,6 @@ const PrivateRoute = ({ allowedRoles }) => {
         );
     }
 
-    // Render the Outlet only if the user is authorized
     return <Outlet />;
 };
 

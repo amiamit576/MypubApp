@@ -7,7 +7,7 @@ import { addToCart } from '../store/Slice/cartSlice';
 
 const Menu = () => {
   const dispatch = useDispatch();
-  const [items, setItems] = useState([]);  // For storing fetched data
+  const [items, setItems] = useState([]); // For storing fetched data
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOption, setSortOption] = useState('');
@@ -18,30 +18,27 @@ const Menu = () => {
     const fetchItems = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/v1/products/products');
-        console.log(response.data.data.products);
-        setItems(response.data.data.products); 
+        setItems(response.data.data.products);
       } catch (error) {
         console.error('Error fetching items:', error);
       }
     };
 
     fetchItems();
-  }, []);  
+  }, []);
 
-  
   const filteredAndSortedItems = (items || [])
-  .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  .sort((a, b) => {
-    if (sortOption === 'name') {
-      return a.name.localeCompare(b.name);
-    } else if (sortOption === 'price') {
-      return a.price - b.price;
-    } else if (sortOption === 'category') {
-      return a.category.localeCompare(b.category);
-    }
-    return 0;
-  });
-
+    .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      if (sortOption === 'name') {
+        return a.name.localeCompare(b.name);
+      } else if (sortOption === 'price') {
+        return a.price - b.price;
+      } else if (sortOption === 'category') {
+        return a.category.localeCompare(b.category);
+      }
+      return 0;
+    });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -77,7 +74,7 @@ const Menu = () => {
               image={item.image}
               name={item.name}
               price={item.price}
-              addToCart={() => dispatch(addToCart(item))}
+              addToCart={() => dispatch(addToCart({ id: item._id, quantity: 1 }))} // Ensure you pass the correct ID
             />
           ))
         ) : (

@@ -1,117 +1,82 @@
-
+/* General form container */
 .reservation-container {
-    max-width: 600px;
-    margin: 25px auto;
-    background-color: #111;
-    color: #fff;
+    max-width: 500px; /* Increased width */
+    margin: 20px auto;
     padding: 20px;
+    background-color: #f9f9f9;
     border-radius: 8px;
-    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Form title */
 .reservation-title {
-    text-align: center;
-    font-size: 24px;
+    font-size: 1.6rem;
     margin-bottom: 10px;
-}
-
-.reservation-description {
     text-align: center;
-    font-size: 14px;
-    color: #ccc;
 }
 
-.reservation-form {
-    display: flex;
-    justify-content: space-between; 
-    gap: 15px;
+/* Form description */
+.reservation-description {
+    font-size: 0.9rem;
+    text-align: center;
     margin-bottom: 20px;
 }
 
-
+/* Form field container */
 .reservation-field {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Labels */
+.reservation-label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+/* Select fields, inputs, and textarea */
+.reservation-select,
+.reservation-input,
+.reservation-textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Adjustments for rows with two and three items */
+.reservation-row {
     display: flex;
-    flex-direction: column; 
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* Two item row (Party size and Table Number) */
+.reservation-row.two-items .reservation-field {
     flex: 1;
 }
 
-.reservation-label {
-    font-size: 16px;
-    font-weight: bold;
-    color: #bfa65a;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
+/* Three item row (Date and Time Slots) */
+.reservation-row.three-items .reservation-field {
+    flex-basis: calc(33.33% - 10px); /* Adjust to make them all equal */
 }
 
-.reservation-select,
-.reservation-input {
+/* Submit button */
+.reservation-submit {
     width: 100%;
     padding: 10px;
-    border-radius: 4px;
-    border: none;
-    font-size: 14px;
-    background-color: #333;
-    color: #fff;
-    outline: none; 
-    margin:0,5px
-    
-}
-
-.reservation-timeslots {
-    text-align: center;
-}
-
-.reservation-timeslots-title {
-    margin-bottom: 10px;
-}
-
-.reservation-slots {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.reservation-slot-button {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 10px 15px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 4px;
-}
-
-.reservation-slot-button.active,
-.reservation-slot-button:hover {
-    background-color: #bfa65a;
-    color: #000;
-}
-
-.reservation-submit {
-    display: block;
-    width: 100%;
-    background-color: #bfa65a;
-    color: #111;
-    padding: 12px;
-    font-size: 16px;
+    background-color: #28a745;
+    color: white;
     border: none;
     border-radius: 4px;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 20px;
+    transition: background-color 0.3s;
 }
 
 .reservation-submit:hover {
-    background-color: #d1b372;
-}
-
-
-@media (max-width: 768px) {
-    .reservation-form {
-        flex-direction: column;
-    }
-
-    .reservation-field {
-        margin-bottom: 10px; 
-    }
+    background-color: #218838;
 }

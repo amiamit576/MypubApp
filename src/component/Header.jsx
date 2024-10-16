@@ -2,11 +2,11 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { VscAccount } from 'react-icons/vsc';
-import { FaCartArrowDown } from 'react-icons/fa';
-import { FaSignOutAlt } from 'react-icons/fa'; 
+import { FaCartArrowDown, FaSignOutAlt } from 'react-icons/fa'; 
 import logo from '../assets/logo.png';
 import './Header.css';
-
+import { toast } from 'react-toastify'; 
+import axios from 'axios'; 
 import { logout } from '../store/Slice/authSlice';
 
 function Header() {
@@ -17,10 +17,24 @@ function Header() {
   const user = useSelector((state) => state.auth.user); 
   const totalItems = cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (window.confirm("Are you sure you want to logout?")) {
-      dispatch(logout());
-      navigate('/'); 
+      try {
+        const response = await axios.post('http://localhost:5000/api/v1/user/logout', {}, {
+          withCredentials: true,  
+        });
+  
+        if (response.status === 200) {
+          dispatch(logout());
+          toast.success('Logout successful!');
+          navigate('/');
+        } else {
+          toast.error('Logout failed, please try again.');
+        }
+      } catch (error) {
+        console.error('Logout failed', error);
+        toast.error('An error occurred during logout.');
+      }
     }
   };
 
@@ -33,24 +47,12 @@ function Header() {
       </div>
       <div className="header-navigation">
         <ul className="header-list">
-          <li>
-            <Link className="header-link" to="/">Home</Link>
-          </li>
-          <li>
-            <Link className="header-link" to="/join">Join our List</Link>
-          </li>
-          <li>
-            <Link className="header-link" to="/special-event">Special Event</Link>
-          </li>
-          <li>
-            <Link className="header-link" to="/reservation">Reservation</Link>
-          </li>
-          <li>
-            <Link className="header-link" to="/gallery">Gallery</Link>
-          </li>
-          <li>
-            <Link className="header-link" to="/contact">Contact</Link>
-          </li>
+          <li><Link className="header-link" to="/">Home</Link></li>
+          <li><Link className="header-link" to="/UserDetailPage">About</Link></li>
+          <li><Link className="header-link" to="/special-event">Special Event</Link></li>
+          <li><Link className="header-link" to="/reservation">Reservation</Link></li>
+          <li><Link className="header-link" to="/gallery">Gallery</Link></li>
+          <li><Link className="header-link" to="/contact">Contact</Link></li>
         
           <li>
             <Link className="header-link" to="/cart">
@@ -60,25 +62,28 @@ function Header() {
               </div>
             </Link>
           </li>
-        
+
+          {/* Show Username if logged in */}
+          {user && (
+            <li>
+              <Link className="header-link header-link--account" to="/user-dashboard">
+                <div className="header-account">
+                  <span>{user.firstName ? `${user.firstName} ${user.lastName}` : user.email}</span>
+                </div>
+              </Link>
+            </li>
+          )}
+
+          {/* Show Logout button if logged in, otherwise show Login button */}
           <li>
             {user ? (
-              <>
-                <Link className="header-link header-link--account" to="/user-dashboard">
-                  <div className="header-account">
-                 
-                    <span>{user.firstName ? `${user.firstName} ${user.lastName}` : user.email}</span>
-                  </div>
-                </Link>
-
-                <button 
-                  className="header-link header-link--logout" 
-                  onClick={handleLogout}
-                >
-                  <FaSignOutAlt className="header-logout__icon" />
-                  <span>Logout</span>
-                </button>
-              </>
+              <button 
+                className="header-link header-link--logout" 
+                onClick={handleLogout}
+              >
+                <FaSignOutAlt className="header-logout__icon" />
+                <span>Logout</span>
+              </button>
             ) : (
               <Link className="header-link header-link--login" to="/authForm">
                 <div className="header-login">
