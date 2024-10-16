@@ -10,6 +10,7 @@ const SpecialEvent = () => {
     phoneNumber: "",
     attendees: "",
     attendanceType: "",
+    eventName: "",  // New field for event name/occasion
   });
 
   const handleInputChange = (e) => {
@@ -50,6 +51,19 @@ const SpecialEvent = () => {
       <section className="specialevents-registration">
         <h3 className="specialevents-form-title">Register your Event</h3>
         <form className="specialevents-form" onSubmit={handleSubmit}>
+          {/* Event Name/Occasion */}
+          <div className="specialevents-input-group">
+            <input
+              type="text"
+              name="eventName"
+              placeholder="Event Name/Occasion"
+              value={formData.eventName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          {/* Personal details */}
           <div className="specialevents-input-group">
             <input
               type="text"
@@ -98,6 +112,7 @@ const SpecialEvent = () => {
             </div>
           </div>
 
+          {/* Event attendees and attendance type */}
           <div className="specialevents-input-group">
             <input
               type="number"

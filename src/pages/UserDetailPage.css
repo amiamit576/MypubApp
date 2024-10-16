@@ -1,0 +1,89 @@
+/* Styling for the user details section */
+.user-details {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  .user-details__title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .user-details__info {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .user-details__item {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .user-details__loading, 
+  .user-details__error, 
+  .user-details__no-data {
+    font-size: 16px;
+    color: #f00;
+    text-align: center;
+  }
+  
+  /* Styling for reservations */
+  .reservations__title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .reservations__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .reservations__table-header {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .reservations__table-header-cell,
+  .reservations__table-cell {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .reservations__table-row:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .reservations__table-row:hover {
+    background-color: #e2e2e2;
+    cursor: pointer;
+  }
+  
+  .reservations__no-data {
+    font-size: 16px;
+    color: #555;
+    margin-top: 10px;
+  }
+  
+  /* Button styling */
+  .reservations__action-btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .reservations__action-btn:hover {
+    background-color: #0056b3;
+  }
+  

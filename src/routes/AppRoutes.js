@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Homelayout from '../layout/Homelayout';
 import Home from '../pages/Home';
-import Join from '../pages/Join';
 import SpecialEvent from '../pages/SpecialEvent';
 import Reservation from '../pages/Reservation';
 import Gallery from '../pages/Gallery';
@@ -15,6 +14,8 @@ import NotFound from '../pages/NotFound';
 import UserDetailPage from '../pages/UserDetailPage';
 import AdminDashboard from '../pages/AdminDashboard';
 import PrivateRoute from '../routes/PrivateRoute';
+import ReservationDetailPage from '../pages/ReservationDetailPage';
+import UpdateReservation from '../pages/UpdateReservation';
 
 const AppRoutes = () => {
   return (
@@ -27,13 +28,15 @@ const AppRoutes = () => {
         <Route path="contact" element={<Contact />} />
         <Route path="authForm" element={<AuthForm />} />
         <Route path="menu" element={<Menu />} />
-        <Route path="cart" element={<Cart />} />
+        <Route path="/reservation/:id" element={<ReservationDetailPage />} />
+        <Route path="/reservation/update/:id" element={<UpdateReservation />} />
+       
        
         <Route path="*" element={<NotFound />} />
 
         {/* Protected Routes */}
         <Route element={<PrivateRoute allowedRoles={['user', 'admin']} />}>
-          <Route path="join" element={<Join />} />
+          <Route path="cart" element={<Cart />} />
           <Route path="UserDetailPage" element={<UserDetailPage />} />
           <Route path="reservation" element={<Reservation />} />
           <Route path="checkout" element={<Checkout />} />
