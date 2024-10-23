@@ -1,97 +1,151 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import axiosInstance from './../../services/axiosInstance';
 
-// Axios instance with credentials support
-const axiosInstance = axios.create({
-  withCredentials: true,
+// Add to Cart
+export const addToCart = createAsyncThunk('cart/addToCart', async (item, { rejectWithValue }) => {
+  try {
+    if (!item || !item._id) {
+      throw new Error('Product ID (item._id) is missing or item is undefined');
+    }
+
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || { data: { cart: { items: [] } } };
+
+    const items = cart.data.cart.items;
+
+    const existingItem = items.find(i => i.product._id === item._id);
+
+    // Ensure full product details are added for guest users
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      items.push({
+        product: {
+          _id: item._id,
+          name: item.name,   // Include product name
+          image: item.image, // Include product image
+          price: item.price  // Include product price
+        },
+        quantity: 1
+      });
+    }
+    console.log("cart   before   adding",cart)
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+
+    // If authenticated, sync with backend
+    if (isAuthenticated) {
+      const productToSend = { productId: item._id, quantity: existingItem ? existingItem.quantity : 1 };
+      await axiosInstance.post('/cart/addcart', productToSend);
+    }
+
+    toast.success('Item added to cart!');
+    return cart;
+  } catch (error) {
+    toast.error(error.response?.data?.message || 'Failed to add item to cart');
+    return rejectWithValue(error.response?.data?.message || 'Failed to add item to cart');
+  }
 });
 
-// Interceptor to handle any error globally if needed (optional)
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Async Thunks for cart operations with updated API URL
+// Fetch Cart
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (_, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/cart`);
-    return response.data.data.cart;
-  } catch (error) {
-    if (error.response?.status === 401) {
-      toast.error('Please log in to continue.');
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
+
+    // Fetch cart from backend for authenticated users
+    if (isAuthenticated) {
+      const response = await axiosInstance.get('/cart/cart');
+      sessionStorage.setItem('cart', JSON.stringify(response.data));
+      return response.data;
+    } else {
+      // For guest users, retrieve cart from sessionStorage
+      const cart = JSON.parse(sessionStorage.getItem('cart')) || { data: { cart: { items: [] } } };
+      return cart;
     }
-    return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+  } catch (error) {
+    toast.error(error.response?.data?.message || 'Failed to fetch cart');
+    return rejectWithValue(error.response?.data?.message || 'Failed to fetch cart');
   }
 });
 
-export const addToCart = createAsyncThunk('cart/addToCart', async (item, { dispatch, rejectWithValue }) => {
+// Remove from Cart
+export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (productId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`http://localhost:5000/api/v1/cart/cart`, {
-      productId: item.id,
-      quantity: 1,
-    });
-    toast.success('Item added to cart!');
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
 
-    // Fetch the updated cart after adding the item
-    dispatch(fetchCart());
-
-    return response.data.data.cart; // Returning updated cart data
+    if (isAuthenticated) {
+      const response = await axiosInstance.delete(`/cart/remove/${productId}`);
+      console.log(response.data)
+      console.log(response.data.cart)
+      return response.data;
+    
+    } else {
+      const cart = JSON.parse(sessionStorage.getItem('cart')) || { data: { cart: { items: [] } } };
+      const updatedCart = cart.data.cart.items.filter(item => item.product._id !== productId);
+      sessionStorage.setItem('cart', JSON.stringify({ data: { cart: { items: updatedCart } } }));
+      return { data: { cart: { items: updatedCart } } };
+    }
   } catch (error) {
-    toast.error('Failed to add item to cart');
-    return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+    toast.error('Failed to remove item from cart');
+    return rejectWithValue(error.response?.data?.message || 'Failed to remove item from cart');
   }
 });
 
-export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (productId, { dispatch, rejectWithValue }) => {
+// Update Item Quantity
+export const updateItemQuantity = createAsyncThunk('cart/updateItemQuantity', async ({ productId, quantity }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/cart/${productId}`);
-    toast.success('Item removed from cart!');
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
 
-    // Fetch the updated cart after removing the item
-    dispatch(fetchCart());
+    if (isAuthenticated) {
+      console.log("slice",productId,quantity)
+      const response = await axiosInstance.put(`/cart/update/${productId}`, { productId, quantity });
+      return response.data;
+    } else {
+      const cart = JSON.parse(sessionStorage.getItem('cart')) || { data: { cart: { items: [] } } };
+      const item = cart.data.cart.items.find(i => i.product._id === productId);
 
-    return response.data.data.cart;
+      if (item) {
+        item.quantity = quantity;
+        if (quantity <= 0) {
+          const updatedCart = cart.data.cart.items.filter(i => i.product._id !== productId);
+          sessionStorage.setItem('cart', JSON.stringify({ data: { cart: { items: updatedCart } } }));
+          return { data: { cart: { items: updatedCart } } };
+        }
+      }
+
+      sessionStorage.setItem('cart', JSON.stringify(cart));
+      return cart;
+    }
   } catch (error) {
-    return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+    toast.error('Failed to update item quantity');
+    return rejectWithValue(error.response?.data?.message || 'Failed to update item quantity');
   }
 });
 
-export const updateItemQuantity = createAsyncThunk('cart/updateItemQuantity', async ({ productId, quantity }, { dispatch, rejectWithValue }) => {
+// Clear Cart
+export const clearCart = createAsyncThunk('cart/clearCart', async (_, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.patch(`http://localhost:5000/api/v1/cart/cart/${productId}`, { quantity });
+    const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
 
-    // Fetch the updated cart after updating the item quantity
-    dispatch(fetchCart());
-
-    return response.data.data.cart;
+    if (isAuthenticated) {
+      await axiosInstance.delete('/cart/clear');
+      return { data: { cart: { items: [] } } };
+    } else {
+      sessionStorage.setItem('cart', JSON.stringify({ data: { cart: { items: [] } } }));
+      return { data: { cart: { items: [] } } };
+    }
   } catch (error) {
-    return rejectWithValue(error.response?.data?.message || 'Something went wrong');
-  }
-});
-
-export const clearCart = createAsyncThunk('cart/clearCart', async (_, { dispatch, rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/cart`);
-    toast.info('Cart cleared!');
-
-    // Fetch the updated cart after clearing it
-    dispatch(fetchCart());
-
-    return response.data.data.cart;
-  } catch (error) {
-    return rejectWithValue(error.response?.data?.message || 'Something went wrong');
+    toast.error('Failed to clear cart');
+    return rejectWithValue(error.response?.data?.message || 'Failed to clear cart');
   }
 });
 
 // Initial State
 const initialState = {
-  cartItems: [],
+  cartItems: [], 
   loading: false,
   error: null,
+  isAuthenticated: sessionStorage.getItem('isAuthenticated') === 'true',
 };
 
 // Cart Slice
@@ -101,34 +155,29 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch Cart
       .addCase(fetchCart.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.items; // Ensure correct structure
+        state.cartItems = action.payload.data.cart.items;
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      // Add to Cart
       .addCase(addToCart.fulfilled, (state, action) => {
-        state.cartItems = action.payload.items; // Ensure correct structure
+        state.cartItems = action.payload.data.cart.items;
       })
-      // Remove from Cart
       .addCase(removeFromCart.fulfilled, (state, action) => {
-        state.cartItems = action.payload.items; // Ensure correct structure
+        state.cartItems = action.payload.data.cart.items;
       })
-      // Clear Cart
+      .addCase(updateItemQuantity.fulfilled, (state, action) => {
+        state.cartItems = action.payload.data.cart.items;
+      })
       .addCase(clearCart.fulfilled, (state) => {
         state.cartItems = [];
-      })
-      // Update Item Quantity
-      .addCase(updateItemQuantity.fulfilled, (state, action) => {
-        state.cartItems = action.payload.items; // Ensure correct structure
       });
   },
 });

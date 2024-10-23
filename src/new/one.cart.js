@@ -10,31 +10,31 @@ const Cart = () => {
   const navigate = useNavigate();
   
   // Access cart state from Redux
-  const { cartItems, loading, error, isAuthenticated } = useSelector(state => state.cart);
-  
+  const { guestCartItems, authenticatedCartItems, loading, error, isAuthenticated } = useSelector(state => state.cart);
+
   // Fetch cart on component mount
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
 
+  // Determine which cart to display based on authentication
+  const cartItems = isAuthenticated 
+    ? authenticatedCartItems.data.cart.items // Access items for authenticated user
+    : guestCartItems?.data?.cart?.items || []; // Access items for guest user
+
   // Handle removing item from cart
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId))
       .unwrap()
-      .then(() => {
-        toast.success('Item removed from cart!');
-        dispatch(fetchCart());  // Fetch updated cart after removing item
-      })
+      .then(() => toast.success('Item removed from cart!'))
       .catch(() => toast.error('Failed to remove item.'));
   };
 
   // Handle updating item quantity
   const handleQuantityChange = (productId, quantity) => {
-    console.log(productId,quantity)
     if (quantity > 0) {
       dispatch(updateItemQuantity({ productId, quantity }))
         .unwrap()
-        .then(() => dispatch(fetchCart()))  
         .catch(() => toast.error('Failed to update quantity.'));
     } else {
       toast.warn('Quantity cannot be less than 1');
@@ -45,10 +45,7 @@ const Cart = () => {
   const handleClearCart = () => {
     dispatch(clearCart())
       .unwrap()
-      .then(() => {
-        toast.info('Cart cleared!');
-        dispatch(fetchCart());  // Fetch updated cart after clearing
-      })
+      .then(() => toast.info('Cart cleared!'))
       .catch(() => toast.error('Failed to clear cart.'));
   };
 
@@ -65,14 +62,8 @@ const Cart = () => {
   if (loading) return <p>Loading cart...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  // Safely access cart data, fallback to guest cart if not authenticated
-  const guestCart = JSON.parse(sessionStorage.getItem('cart'))?.data?.cart?.items || [];
-  const cart = isAuthenticated
-    ? cartItems || []  // If authenticated, use the cartItems directly
-    : guestCart || []; // Fallback to guestCart for unauthenticated users
-
   // If the cart is empty
-  if (!Array.isArray(cart) || cart.length === 0) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
     return (
       <p className="cart-empty-message">
         Your cart is empty. <Link to="/menu" className="cart-link">Shop Now</Link>
@@ -81,8 +72,8 @@ const Cart = () => {
   }
 
   // Calculate total price, discount, and other charges
-  const totalPrice = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
-  const discount = 0; // Placeholder for future discount logic
+  const totalPrice = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  const discount = 0; // Modify this if you have a discount logic
   const platformFee = totalPrice > 500 ? 0 : 50;
   const deliveryCharges = totalPrice > 1000 ? 0 : 50;
 
@@ -93,7 +84,7 @@ const Cart = () => {
       <div className="cart-content">
         <div className="cart-left">
           <ul>
-            {cart.map(item => (
+            {cartItems.map(item => (
               <li key={item.product._id} className="cart-item">
                 <img src={`http://localhost:5000${item.product.image}`} alt={item.product.name} className="cart-item__image" />
                 <div className="cart-item-details">
@@ -101,15 +92,12 @@ const Cart = () => {
                   <p className="cart-item__price">Price: ₹{item.product.price}</p>
                   <p className="cart-item__quantity">
                     Quantity:
-                    <button onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)} disabled={item.quantity <= 1}>−</button>
                     <input
                       type="number"
                       value={item.quantity}
                       onChange={(e) => handleQuantityChange(item.product._id, parseInt(e.target.value))}
                       className="quantity-input"
-                      min="1"
                     />
-                    <button onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}>+</button>
                   </p>
                   <button onClick={() => handleRemoveFromCart(item.product._id)} className="cart-item__remove-button">
                     Remove
@@ -124,7 +112,7 @@ const Cart = () => {
         <div className="cart-right">
           <h3 className="price-summary-title">Price Details</h3>
           <div className="price-summary">
-            <p>Price ({cart.length} item{cart.length > 1 ? 's' : ''}): ₹{totalPrice}</p>
+            <p>Price ({cartItems.length} item{cartItems.length > 1 ? 's' : ''}): ₹{totalPrice}</p>
             <p>Discount: - ₹{discount}</p>
             <p>Platform Fee: ₹{platformFee}</p>
             <p>Delivery Charges: {deliveryCharges === 0 ? 'Free' : `₹${deliveryCharges}`}</p>

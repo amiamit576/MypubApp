@@ -7,7 +7,7 @@ import { addToCart } from '../store/Slice/cartSlice';
 
 const Menu = () => {
   const dispatch = useDispatch();
-  const [items, setItems] = useState([]); // For storing fetched data
+  const [items, setItems] = useState([]); // For storing fetched da
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOption, setSortOption] = useState('');
@@ -74,7 +74,11 @@ const Menu = () => {
               image={item.image}
               name={item.name}
               price={item.price}
-              addToCart={() => dispatch(addToCart({ id: item._id, quantity: 1 }))} // Ensure you pass the correct ID
+
+              addToCart={() => dispatch(addToCart({ _id: item._id, name: item.name, image: item.image, price: item.price }))}
+              //addToCart={() => dispatch(addToCart({ _id: item._id }))} // Only pass _id
+
+              //addToCart={() => dispatch(addToCart ({ id: item._id, quantity: 1 }))} 
             />
           ))
         ) : (

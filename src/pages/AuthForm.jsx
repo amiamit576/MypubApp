@@ -44,8 +44,6 @@ const AuthForm = () => {
 
     const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-
-    
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all required fields.');
       return;
@@ -87,12 +85,11 @@ const AuthForm = () => {
 
     if (isLoginMode) {
       try {
-        
         const response = await axios.post(`${API_URL}/login`, {
           email: formData.email,
           password: formData.password,
         }, {
-          withCredentials: true, 
+          withCredentials: true,
         });
 
         const data = response.data;
@@ -103,7 +100,10 @@ const AuthForm = () => {
         }
 
         dispatch(login(data.user));
-        toast.success('Login successful!');
+        sessionStorage.setItem('isAuthenticated', true); // Use sessionStorage here
+
+
+        // Redirect to user detail page
         navigate('/UserDetailPage');
       } catch (error) {
         toast.error(error.response?.data?.message || 'Login failed');

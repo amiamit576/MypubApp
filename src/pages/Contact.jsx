@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './Contact.css';
+import axiosInstance from '../services/axiosInstance';
+import { toast } from 'react-toastify';  // Import toast
+import 'react-toastify/dist/ReactToastify.css';  // Import toast styles
 
 const Contact = () => {
   const [feedbackData, setFeedbackData] = useState({
@@ -15,9 +18,21 @@ const Contact = () => {
     setFeedbackData({ ...feedbackData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(feedbackData); // Handle form submission logic here
+    try {
+      await axiosInstance.post('/feedback/createFeedback', feedbackData);
+      toast.success('Feedback submitted successfully!');
+      setFeedbackData({
+        name: '',
+        email: '',
+        phone: '',
+        feedbackType: '',
+        message: '',
+      });
+    } catch (error) {
+      toast.error('Failed to submit feedback. Please try again.');
+    }
   };
 
   return (
