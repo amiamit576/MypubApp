@@ -1,11 +1,24 @@
-import React from 'react'
+import React from 'react';
+import AdminUsers from './admin/AdminUsers';
+import AdminProducts from './admin/AdminProducts';
 
-function AdminDashboard() {
+const AdminDashboard = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <div className="admin-dashboard">
+      <h2>Admin Dashboard</h2>
 
-export default AdminDashboard
+      {/* User Management Section */}
+      <section>
+        <AdminUsers />
+      </section>
+
+      {/* Product Management Section */}
+      <section>
+        <AdminProducts />
+      </section>
+    </div>
+  );
+};
+
+export default AdminDashboard;
+
