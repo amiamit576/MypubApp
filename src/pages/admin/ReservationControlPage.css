@@ -1,0 +1,110 @@
+/* Main reservation control page styles */
+.reservation-control-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.reservation-control-page-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.reservation-control-page-loading,
+.reservation-control-page-error {
+  text-align: center;
+  font-size: 18px;
+}
+
+.reservation-control-page-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.reservation-control-page-table-header {
+  background-color: #f2f2f2;
+}
+
+.reservation-control-page-table-header-cell,
+.reservation-control-page-table-cell {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.reservation-control-page-actions-cell {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.reservation-control-page-action-button {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.reservation-control-page-view-update-button {
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+}
+
+.reservation-control-page-delete-button {
+  background-color: #dc3545;
+  color: white;
+  border-radius: 4px;
+}
+
+/* Modal popup styling */
+.reservation-control-page-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.reservation-control-page-modal-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.reservation-control-page-modal-content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+}
+
+.reservation-control-page-modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.reservation-control-page-modal-text {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.reservation-control-page-close-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}

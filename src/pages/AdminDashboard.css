@@ -1,0 +1,20 @@
+.admin-dashboard {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.admin-sidebar {
+  width: 15vw;
+  max-width: 18.75rem;
+  min-width: 12.5rem;
+  background-color: #333;
+  color: #fff;
+  height: 100%;
+}
+
+.admin-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-left: 2rem;
+}

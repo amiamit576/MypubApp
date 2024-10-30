@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from 'react-toastify';
 import "./Reservation.css";
 
 const Reservation = () => {
@@ -9,18 +10,18 @@ const Reservation = () => {
     partySize: 2,
     date: new Date(),
     tableNumber: null,
-    timeSlotFrom: null, // Single time slot
+    timeSlotFrom: null, 
     seatingPreference: "",
     additionalDetails: "",
   });
 
-  const tableNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // Tables 1 to 50
+  const tableNumbers = Array.from({ length: 50 }, (_, i) => i + 1); 
   const timeSlots = [
     "07:00", "07:30", "08:00", "08:30", "09:00",
     "09:30", "10:00", "10:30"
-  ]; // Available time slots
+  ]; 
 
-  const seatingOptions = ["Indoor", "Outdoor", "Window"]; // Seating preferences
+  const seatingOptions = ["Indoor", "Outdoor", "Window"]; 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,26 +51,25 @@ const Reservation = () => {
           timeSlot: { from: reservationData.timeSlotFrom } 
         },
         {
-          withCredentials: true // Ensures cookies are sent with the request
+          withCredentials: true 
         }
       );
 
-      console.log("Reservation successful:", response.data);
-      // Handle success: maybe show a confirmation message or navigate
+      toast.success(response.data.message || "Reservation successful!"); 
     } catch (error) {
-      console.error("Error creating reservation:", error);
+      const errorMessage = error.response?.data?.message || "Error creating reservation.";
+      toast.error(errorMessage); 
     }
   };
 
   return (
-    <div className="reservation-container">
+    <div className="reservation-container"> 
       <h2 className="reservation-title">Request a reservation</h2>
       <p className="reservation-description">
         Select your details and we’ll assign the best table for you
       </p>
 
       <form className="reservation-form" onSubmit={handleSubmit}>
-        {/* Party Size and Table Number (2 items in row) */}
         <div className="reservation-row two-items">
           <div className="reservation-field">
             <label className="reservation-label" htmlFor="party-size">Party size</label>
@@ -106,8 +106,6 @@ const Reservation = () => {
             </select>
           </div>
         </div>
-
-        {/* Date and Time Slot (2 items in row) */}
         <div className="reservation-row two-items">
           <div className="reservation-field">
             <label className="reservation-label" htmlFor="date">Date</label>
@@ -139,7 +137,6 @@ const Reservation = () => {
           </div>
         </div>
 
-        {/* Seating Preference */}
         <div className="reservation-field">
           <label className="reservation-label" htmlFor="seating-preference">Seating Preference</label>
           <select
@@ -157,8 +154,6 @@ const Reservation = () => {
             ))}
           </select>
         </div>
-
-        {/* Additional Details */}
         <div className="reservation-field">
           <label className="reservation-label" htmlFor="additional-details">Additional Details</label>
           <textarea
@@ -170,7 +165,6 @@ const Reservation = () => {
             className="reservation-textarea"
           />
         </div>
-
         <button className="reservation-submit" type="submit">Request Now</button>
       </form>
     </div>

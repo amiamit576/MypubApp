@@ -2,12 +2,16 @@ import React from 'react';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 import aboutimg from '../assets/about.jpg';
+import OfferPopup from '../component/modal/OfferPopup';
 
 function Home() {
   const navigate = useNavigate();
 
   return (
     <>
+      {/* Show offer popup */}
+      <OfferPopup />
+
       <div className="home-container">
         <div className="home-text-overlay">
           <h1>Welcome to MyBar</h1>
@@ -22,12 +26,12 @@ function Home() {
       </div>
 
       <div className="home-catalog-container">
-        <div className="home-catalog-item" onClick={()=>navigate('/reservation')}>
-          <h2 >Reservations</h2>
+        <div className="home-catalog-item" onClick={() => navigate('/reservation')}>
+          <h2>Reservations</h2>
           <p>Book a table to enjoy an evening with friends.</p>
         </div>
 
-        <div className="home-catalog-item" onClick={()=>navigate('/special-event')}>
+        <div className="home-catalog-item" onClick={() => navigate('/special-event')}>
           <h2>Special Events</h2>
           <p>Join us for live music, sports screenings, and more!</p>
         </div>
@@ -47,8 +51,6 @@ function Home() {
           </div>
         </div>
       </div>
-
-   
     </>
   );
 }
