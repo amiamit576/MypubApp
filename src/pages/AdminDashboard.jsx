@@ -1,24 +1,19 @@
 import React from 'react';
-import AdminUsers from './admin/AdminUsers';
-import AdminProducts from './admin/AdminProducts';
+import { Outlet } from 'react-router-dom';
+import AdminSideBar from './admin/AdminSideBar'; 
+import './AdminDashboard.css'; 
 
 const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
-      <h2>Admin Dashboard</h2>
-
-      {/* User Management Section */}
-      <section>
-        <AdminUsers />
-      </section>
-
-      {/* Product Management Section */}
-      <section>
-        <AdminProducts />
-      </section>
+      <div className="admin-sidebar">
+        <AdminSideBar />
+      </div>
+      <div className="admin-content">
+        <Outlet />
+      </div>
     </div>
   );
 };
 
 export default AdminDashboard;
-

@@ -18,6 +18,8 @@ import ReservationDetailPage from "../pages/ReservationDetailPage";
 import UpdateReservation from "../pages/UpdateReservation";
 import AdminProducts from "../pages/admin/AdminProducts";
 import AdminUsers from "../pages/admin/AdminUsers";
+import FeedbackDetails from "../pages/admin/FeedbackDetails";
+import ReservationControl from "../pages/admin/ReservationControlPage";
 
 const AppRoutes = () => {
   return (
@@ -45,10 +47,14 @@ const AppRoutes = () => {
 
         {/* Admin Protected Route */}
         <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/admin-products" element={<AdminProducts />} />
-          <Route path="/admin-users" element={<AdminUsers />} />
-
+          {/* Make AdminDashboard a parent route */}
+          <Route path="/admin-dashboard" element={<AdminDashboard />}>
+            {/* Child routes that will be rendered in the Outlet of AdminDashboard */}
+            <Route path="admin-products" element={<AdminProducts />} />
+            <Route path="admin-users" element={<AdminUsers />} />
+            <Route path="admin-reservation" element={<ReservationControl />} />
+            <Route path="admin-feedback" element={<FeedbackDetails />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

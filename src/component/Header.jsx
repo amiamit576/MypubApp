@@ -65,8 +65,8 @@ function Header() {
           {user?.role === 'admin' && (
             <>
               <li><Link className="header-link" to="/admin-dashboard">Admin Dashboard</Link></li>
-              <li><Link className="header-link" to="/admin-products">Manage Products</Link></li>
-              <li><Link className="header-link" to="/admin-users">Manage Users</Link></li>
+              <li><Link className="header-link" to="/admin-dashboard/admin-users">Manage Products</Link></li>
+              <li><Link className="header-link" to="/admin-dashboard/admin-products">Manage Users</Link></li>
             </>
           )}
 

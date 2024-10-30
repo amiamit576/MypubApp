@@ -1,0 +1,62 @@
+.AdminSideBar {
+  width: 15vw;
+  background-color: #f8f9fa;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  position: fixed;
+}
+
+.AdminSideBar h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.AdminSideBar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.AdminSideBar li {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+  color: #333;
+}
+
+.AdminSideBar li:hover {
+  background-color: #e9ecef;
+  transform: translateX(5px);
+}
+
+.sidebar-item.users {
+  background-color: #fef6f9;
+}
+
+.sidebar-item.products {
+  background-color: #f3f7fc;
+}
+
+.sidebar-item.reservation {
+  background-color: #fcf3f3;
+}
+
+.sidebar-item.feedback {
+  background-color: #f3fcf7;
+}
+
+.AdminSideBar li:hover {
+  background-color: #dee2e6;
+}
+
+.AdminSideBar li.active {
+  background-color: #adb5bd;
+  color: white;
+}

@@ -11,7 +11,7 @@ const MenuCard = ({ image, name, price, addToCart }) => {
   const decreaseQuantity = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
   const handleAddToCart = () => {
-    addToCart({ id: image, quantity }); // Include quantity in the cart
+    addToCart({ id: image, quantity }); 
   };
 
   return (
